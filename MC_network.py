@@ -1,7 +1,7 @@
 from numpy.random import randint
 from random import random
-from numpy import copy,zeros,array,newaxis,exp,dot,sqrt,reshape,loadtxt
-from pylab import imshow,show,subplots,pcolor
+from numpy import copy,zeros,array,newaxis,exp,dot,sqrt,reshape,loadtxt,fill_diagonal
+from pylab import imshow,show,subplots
 
 #Parametros
 T = 0.2 #Temperatura
@@ -24,8 +24,7 @@ J = zeros([N,N],float)
 for k in range(K):
 	xi = memory[k,:][newaxis]
 	J += N**(-1)*(dot(xi.T,xi)) #Calculamos las constantes de acoplo (Eq 1.5 del paper de Amit et al.)
-for k in range(N):
-	J[k,k] = 0.0 #Eliminamos los terminos diagonales
+fill_diagonal(J, 0)
 
 S = 2*randint(0,2,[1,N]) - 1 #configuracion inicial aleatoria
 S_mat = reshape(S,(L,L))
