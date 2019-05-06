@@ -163,7 +163,7 @@
 	
 	Las ecuaciones de movimiento dadas por \eqref{Hfeigelman} serán equivalentes a las ecuaciones de Langevin para la evolución de los espines $\sigma_i$. Estas son \cite{feigelman86}:
 	\begin{equation}
-	\frac{\partial\sigma_i}{\partial t} = -\frac{\partial V(\sigma_i)}{\partial\sigma_i} + \sum_j J_{ij}\sigma_i + h_i\sigma_i + \xi_i(t)
+	\frac{\partial\sigma_i}{\partial t} = -\frac{\partial V(\sigma_i)}{\partial\sigma_i} + \sum_j J_{ij}\sigma_j + h_i\sigma_i + \xi_i(t)
 	\label{langevin}
 	\end{equation}
 	En esta dinámica gobernada por \eqref{langevin} los patrones serán estados estables con un rango de atracción en el espacio de configuración, de modo que si un estado inicial $\tilde{\sigma_i}$ es parcialmente similar a uno de los estados estacionarios que $\sigma_i$ conforman el patrón, la dinámica llevará $\tilde{\sigma_i}$ a $\sigma_i$; este es el mecanismo mediante el cual la red recuerda el patrón.\\

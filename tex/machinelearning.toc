@@ -1,0 +1,8 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Red de Hopfield}{2}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}Analog\IeC {\'\i }a con sistemas magn\IeC {\'e}ticos. Hamiltoniano de Ising}{2}{subsection.1.1}% 
+\contentsline {section}{\numberline {2}Generalizaci\IeC {\'o}n del modelo de Hopfield}{3}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Teor\IeC {\'\i }a de campo medio para el modelo}{3}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Distribuci\IeC {\'o}n de los patrones. Estados de Mattis}{4}{subsection.2.2}% 
+\contentsline {section}{\numberline {3}Ecuaci\IeC {\'o}n de Langevin para la din\IeC {\'a}mica de los espines}{5}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Simulaci\IeC {\'o}n num\IeC {\'e}rica de la din\IeC {\'a}mica}{7}{subsection.3.1}% 
