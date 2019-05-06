@@ -47,7 +47,7 @@
 	\item Red de Hopfield $\sim$ Modelo de Ising para sistemas magnéticos.
 	\item Hamiltoniano $\equiv$ Ising ($\vec{B}=0$).
 	\begin{displaymath}
-	H = -\frac{1}{2}\sum_{i}\sum_{j\neq i}J_{ij}\sigma_i\sigma_j
+	H = \frac{1}{2}\sum_{i}\sum_{j\neq i}J_{ij}\sigma_i\sigma_j
 	\end{displaymath}
 	imponemos $J_{ij}=J_{ji}$.
 \end{itemize}
@@ -196,48 +196,4 @@
 	Termodinámicamente equivalente al estado ferromagnético del modelo de Ising. Existen $2K$ de estos estados, los estados de Mattis.
 \end{itemize}
 \end{frame}
-
-\begin{frame}
-\frametitle{Ecuación de Langevin}
-\framesubtitle{Formulación continua}
-\begin{itemize}
-	\item Necesitamos que $\sigma_i \rightarrow \pm 1$ conforme $t \rightarrow \infty$
-	\item Incluimos fluctuaciones térmicas con $\xi_i(t)$
-	\item Fluctuaciones independientes $\langle \xi_i(t) \xi_j(t') \rangle = 2T\delta(t-t')\delta_{ij}$
-	\begin{displaymath}
-	\frac{\partial\sigma_i}{\partial t} = -\lambda(\sigma_i^2-1)\sigma_i + \sum_j J_{ij}\sigma_j + h_i\sigma_i + \xi_i(t)
-	\end{displaymath}	
-\end{itemize}
-\end{frame}
-\begin{frame}
-\frametitle{Ecuación de Langevin}
-\framesubtitle{Formulación discreta}
-\begin{itemize}
-	\item Diferencial estocástico $\mu(dW_i) = 0, \sigma^2(dW_i) = dt$
-	\begin{displaymath}
-	d\sigma = \left( -\lambda(\sigma_i^2 - 1)\sigma_i +  \sum_j J_{ij} \sigma_j + h_i\sigma_i \right) dt + \sqrt{2T}dW_i
-	\end{displaymath}	
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ecuación de Langevin}
-\framesubtitle{Valor de $\lambda$}
-\begin{itemize}
-	\item Valores demasiado grandes de $\lambda$ hacen que no haya evolución
-	\includegraphics[width=\linewidth]{Sobreamortiguado.png}
-	\item Valores demasiado grandes de $\lambda$ hacen no se acerce a $\pm 1$
-	\includegraphics[width=\linewidth]{Subamortiguado.png}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ecuación de Langevin}
-\framesubtitle{Valor de $\lambda$}
-\begin{itemize}
-	\item Valores cercanos a 1 dan una evolución razonable
-	\includegraphics[width=\linewidth, trim= 0 0 0 -3cm]{Normal.png}
-\end{itemize}
-\end{frame}
-
 \end{document}
