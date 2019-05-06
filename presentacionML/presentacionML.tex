@@ -1,0 +1,199 @@
+\documentclass[11pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{caption}
+\usepackage{lipsum}
+\usepackage{lipsum}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{xcolor}
+
+
+\title{Almacenamiento de memoria en redes de Hopfield}
+\author{Julián López Carballal, Jorge García Beni, Rubén de San Juan Morales, Fernando García Sánchez y José Luis Miranda Mora}
+\date{\vspace{0cm}}
+
+\begin{document}
+	
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Red de Hopfield}
+\begin{itemize}
+	\item Red formada por $N$ neuronas.
+	\item Estados $\sigma_i(t)=\pm 1$.
+	\item Evolución temporal discreta con pasos $\Delta t$.
+	\item Interaccionan con pesos $J_{ij}$.
+	\begin{displaymath}
+	\Phi_i(t)=\sum_{j\neq i} J_{ij}\sigma_j
+	\end{displaymath}
+	\item Su fin: almacenamiento y reproducción de patrones.
+	\begin{displaymath}
+	\mathcal{P}^\mu_i = \pm1, \,i \in[1,N],\,\mu\in[1,K]\Rightarrow\frac{1}{N}\sum_{i=1}^N \mathcal{P}^\mu_i \mathcal{P}^\nu_i = \delta^{\mu\nu}
+	\end{displaymath}
+	Patrón reproducido si $\sigma_i(t)=\sigma_i(t+\Delta t)=\mathcal{P}^\mu_i$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Red de Hopfield}
+\framesubtitle{Analogía con el modelo de Ising}
+\begin{itemize}
+	\item Red de Hopfield $\sim$ Modelo de Ising para sistemas magnéticos.
+	\item Hamiltoniano $\equiv$ Ising ($\vec{B}=0$).
+	\begin{displaymath}
+	H = \frac{1}{2}\sum_{i}\sum_{j\neq i}J_{ij}\sigma_i\sigma_j
+	\end{displaymath}
+	imponemos $J_{ij}=J_{ji}$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Red de Hopfield}
+\begin{itemize}
+	\item Solapamiento: cuantificación de la coincidencia con el patrón.
+	\begin{displaymath}
+	m^\mu(t)=\frac{1}{N}\sum_i \mathcal{P}^\mu_i\sigma_i(t)
+	\label{overlap}
+	\end{displaymath}
+	valor máximo $m^\mu=1$ cuando el patrón es replicado.
+	\item Elegimos los pesos:
+	\begin{displaymath}
+	J_{ij}=\frac{1}{N}\sum_{\mu=1}^K \mathcal{P}^\mu_i \mathcal{P}^\mu_j
+	\end{displaymath}
+	relacionan espines con el patrón.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\begin{itemize}
+	\item Hasta ahora hemos tratado un sistema sin ruido.
+	\item En un sistema con ruido se pueden llegar a estados fuera de la dinámica que tratamos.
+	\item Introducimos el ruido en forma de una temperatura efectiva $T$.
+	\item Adopta la dinámica de espines de Glauber. La distribución se relaja a la de Gibbs:
+	\begin{displaymath}
+	P(\lbrace\sigma\rbrace)\propto e^{-H(\lbrace\sigma\rbrace)/T}
+	\end{displaymath}
+	este es el \textbf{modelo de Hopfield generalizado}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Teoría de campo medio}
+\begin{itemize}
+	\item Tomamos unidades $k_B=1$.
+	\item Densidad de energía libre:
+	\begin{displaymath}
+	f(T)=-\frac{T}{N}\left<\log Z\right>_{\mathcal{P}}
+	\end{displaymath}
+	\item Función de partición:
+	\begin{displaymath}
+	\hspace{-1.225cm}Z=\left(\frac{N}{T}\right)^{\frac{K}{2}}e^{-\frac{K}{2T}}\int\prod_\mu \frac{dm^\mu}{\sqrt{2\pi}}\exp\Bigg\{-\frac{N\vec{m}^2}{2T}+\sum_i \log\left[2\cosh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right]\Bigg\}
+	\end{displaymath}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Teoría de campo medio}
+\begin{itemize}
+	\item Si K es finito:
+	\begin{displaymath}
+	-\frac{T\ln Z}{N}=\frac{1}{2}\vec{m}^2-\frac{T}{N}\sum_i\ln\left[2\cosh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right]
+	\end{displaymath}
+	\item El parámetro de orden viene dado por la ecuación $\partial\ln Z/\partial m^\mu$=0:
+	\begin{displaymath}
+	\vec{m}=\frac{1}{N}\sum_i \vec{\mathcal{P}_i}\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)
+	\end{displaymath}
+	\item En LT: $(1/N)\sum_i$ $\rightarrow$ promedios sobre $\lbrace\vec{\mathcal{P}_i}\rbrace$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Teoría de campo medio}
+\begin{itemize}
+	\item Ecuaciones de campo medio:
+	\begin{displaymath}
+	f(T)=\frac{1}{2}\vec{m}^2 - T\left<\log\left[2\cosh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right]\right>_{\mathcal{P}}
+	\end{displaymath}
+	\begin{displaymath}
+	\vec{m}=\left<\vec{\mathcal{P}_i}\cdot\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right>_{\mathcal{P}}
+	\end{displaymath}
+	\item Promedio térmico de los espines: $\left<\sigma_i\right>=\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)$.
+	\begin{displaymath}
+	m^\mu=\left<\mathcal{P}^\mu_i{\left<\sigma_i\right>}\right>_{\mathcal{P}}
+	\end{displaymath}
+	es el solapamiento. Similar a la magnetización del modelo de Ising $\tilde{m}=\left<\sigma_i\right>$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Distribución de los patrones:
+	\begin{displaymath}
+	P(\lbrace\mathcal{P}^\mu_i\rbrace)=\prod_{\mu,i}\frac{1}{2}\left[\delta(\mathcal{P}^\mu_i + 1) + \delta(\mathcal{P}^\mu_i - 1)\right]
+	\end{displaymath}
+	\item Desarrollo en potencias de $\vec{m}$ de las ecuaciones de campo medio:
+	\begin{align*}
+	f=&-T\log 2 + \frac{1}{2}(1 - \beta)\vec{m}^2 + o(\vec{m}^4) \label{fseries}\\ m^\mu=&\beta m^\mu + \frac{2}{3}\beta^3 (m^\mu)^3 - \beta^3m^\mu\vec{m}^2 + o(\vec{m}^4)
+	\end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Distribución de los patrones:
+	\begin{displaymath}
+	P(\lbrace\mathcal{P}^\mu_i\rbrace)=\prod_{\mu,i}\frac{1}{2}\left[\delta(\mathcal{P}^\mu_i + 1) + \delta(\mathcal{P}^\mu_i - 1)\right]
+	\end{displaymath}
+	\item Desarrollo en potencias de $\vec{m}$ de las ecuaciones de campo medio:
+	\begin{align*}
+	f=&-T\log 2 + \frac{1}{2}(1 - \beta)\vec{m}^2 + o(\vec{m}^4) \label{fseries}\\ m^\mu=&\beta m^\mu + \frac{2}{3}\beta^3 (m^\mu)^3 - \beta^3m^\mu\vec{m}^2 + o(\vec{m}^4)
+	\end{align*}
+	$\beta\equiv1/T$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Para $T=1$, $f=-T\log2$ y $m^\mu\approx(\beta-\beta^3\vec{m}^2)m^\mu\Rightarrow\vec{m}=0$.
+	\item Se mantiene para $T>1$. 
+	\item Por debajo de $T_c=1$: aparecen soluciones $m^\mu\neq0$. Definimos la dimensionalidad de $\vec{m}$, $n$.
+	\item Alterar el signo o el orden de las $n$ componentes no nulas no altera las soluciones.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Caso $n=1$.
+	\item Suponemos $m^1=m\neq0$ y $m^\mu = 0\,\,\forall \mu>1$.
+	\begin{displaymath}
+	f=\frac{1}{2}m^2 - T\log\left[2\cosh(\beta m)\right]
+	\end{displaymath}
+	\begin{displaymath}
+	m=\tanh(\beta m)
+	\end{displaymath}
+	\item Se corresponden a un estado dónde:
+	\begin{displaymath}
+	\left<\sigma_i\right>=\mathcal{P}_i^1\tanh(\beta m)
+	\end{displaymath}
+	Termodinámicamente equivalente al estado ferromagnético del modelo de Ising. Existen $2K$ de estos estados, los estados de Mattis.
+\end{itemize}
+\end{frame}
+\end{document}
