@@ -198,6 +198,67 @@
 \end{frame}
 
 \begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Los estados de Mattis son mínimos globales de la energía libre $\Rightarrow$ estados estables.
+	\item Calculamos en $T=0$ para $n=1$:
+	\begin{center}
+	$\lim_{x\rightarrow\infty}\tanh mx=1$ \\
+	$\lim_{x\rightarrow\infty}\frac{1}{x}\log\left(2\cosh mx\right)=1$
+	\end{center}
+	
+	\begin{displaymath}
+	m_{(n=1)}(T=0)=1
+	\end{displaymath}
+	\begin{displaymath}
+	f_{(n=1)}(T=0)=\frac{1}{2}
+	\end{displaymath}	
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item En campo medio:
+	\begin{align*}
+	\lim_{T\rightarrow0}T\log&\left[2\cosh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right]=\vec{m}\cdot\vec{\mathcal{P}_i} \\
+	\lim_{T\rightarrow0}\tanh&\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)=\textnormal{sgn}\,(\vec{m}\cdot\vec{\mathcal{P}_i})
+	\end{align*}
+	
+	\begin{displaymath}
+	\vec{m}_{\textnormal{CM}}(T=0)=\left<\vec{\mathcal{P}_i}\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right>_{\mathcal{P}}
+	\end{displaymath}
+	\begin{displaymath}
+	f_{\textnormal{CM}}(T=0)=\frac{1}{2}\vec{m}^2
+	\end{displaymath}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item $m^\mu\leq1$
+	\begin{displaymath}
+	\vec{m}^2=\sum_{\mu=1}^K (m^\mu)^2
+	\end{displaymath}
+	Implica $\vec{m}^2\leq1$. La igualdad sólo se satisface si $n=1$ (caso estados de Mattis)$\,\rightarrow\,f_{\textnormal{CM}}(T=0)=f_{(n=1)}(T=0)=1/2$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Generalización del modelo de Hopfield}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+	\item Los estados de Mattis son mínimos globales de $f$ (son estables) para $0\leq T\leq1$.
+	\item Se corresponden a la reproducción de un patrón. 
+	\item Existen estados metaestables, soluciones con $n>1$, que serán mínimos locales de la energía libre.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Ecuación de Langevin}
 \framesubtitle{Formulación continua}
 \begin{itemize}
