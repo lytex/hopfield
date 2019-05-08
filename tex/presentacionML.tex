@@ -228,7 +228,7 @@
 	\end{align*}
 	
 	\begin{displaymath}
-	\vec{m}_{\textnormal{CM}}(T=0)=\left<\vec{\mathcal{P}_i}\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right>_{\mathcal{P}}
+	\vec{m}_{\textnormal{CM}}(T=0)=\left<\vec{\mathcal{P}_i}\,\textnormal{sgn}\,\left(\vec{m}\cdot\vec{\mathcal{P}_i}\right)\right>_{\mathcal{P}}
 	\end{displaymath}
 	\begin{displaymath}
 	f_{\textnormal{CM}}(T=0)=\frac{1}{2}\vec{m}^2
@@ -240,11 +240,14 @@
 \frametitle{Generalización del modelo de Hopfield}
 \framesubtitle{Estados de Mattis}
 \begin{itemize}
-	\item $m^\mu\leq1$
+	\item Cota $\vec{m}^2\leq1$.
 	\begin{displaymath}
-	\vec{m}^2=\sum_{\mu=1}^K (m^\mu)^2
+	\vec{m}^2=\left<\vec{m}\cdot\vec{\mathcal{P}_i}\right>_{\mathcal{P}}\leq\left<\left(\vec{m}\cdot\vec{\mathcal{P}_i}\right)^{2}\right>^{\frac{1}{2}}_{\mathcal{P}}=\left[\sum^n_{\mu=1} (m^\mu)^2 \left<\left(\mathcal{P}_i^\mu\right)^2\right>_{\mathcal{P}}\right]^{\frac{1}{2}}
 	\end{displaymath}
-	Implica $\vec{m}^2\leq1$. La igualdad sólo se satisface si $n=1$ (caso estados de Mattis)$\,\rightarrow\,f_{\textnormal{CM}}(T=0)=f_{(n=1)}(T=0)=1/2$
+	\begin{displaymath}
+	\vec{m}^2\leq(\vec{m}^2)^{1/2}=|\vec{m}|\,\Rightarrow\,\vec{m}^2\leq1
+	\end{displaymath}
+	\item La igualdad sólo se satisface cuando $n=1$ (estados de Mattis)$\,\rightarrow\,f_{\textnormal{CM}}(T=0)=f_{(n=1)}(T=0)=1/2$
 \end{itemize}
 \end{frame}
 
