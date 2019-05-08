@@ -259,6 +259,223 @@
 \end{frame}
 
 \begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Metodología}
+
+\begin{itemize}
+    \item Método aleatorio $\longrightarrow$ Algoritmo de Metrópolis.
+    \item Configuración inicial de espines (neuronas) aleatoria $\{ S_{in} \}$.
+    \item A cada paso (\textit{step}) se voltea un spin aleatorio de la red, calculando la nueva energía $E(\{S_{new}\})$.
+    $$
+    \Delta E = E(\{S_{new}\}) - E(\{S_{in}\})
+    $$
+    \item Se acepta el paso con probabilidad:
+    $$
+    P_{\text{change}} = \left\{
+\begin{aligned}
+    1 \ \ \ \ \text{if} \ \ \Delta E \leq 0 \\
+    \text{e}^{-\Delta E/T} \ \ \ \ \text{if} \ \ \Delta E > 0
+\end{aligned}
+\right.
+    $$
+    \item Para $T = 0$ sólo se aceptan pasos con $\Delta E \leq 0$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Metodología}
+\begin{itemize}
+\item Se tomarán previamente $K$ estados de memoria $\{ \mathcal{P}^{\mu}_{i} \}$ de dimensión $N$ ($N$ neuronas).
+\item Las constantes de acoplo se construirán como se ha visto anteriormente:
+$$
+J_{ij} = N^{-1} \sum_{\mu = 1}^{K} \mathcal{P}^{\mu}_{i} \mathcal{P}^{\mu}_{j}
+$$
+\item La energía vendrá dada por:
+$$
+E(\{S\}) = - \frac{1}{2} \sum_{i \neq j} J_{ij} S_{i} S_{j}
+$$
+\end{itemize}   
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Objetivos}
+\begin{itemize}
+\item Comprobar la existencia de $2K$ estados de memoria (estados de Mattis).
+\item Estudiar el comportamiento de la red al aumentar $T$.
+\item Identificar la transición de fase cerca de $T_{c} = 1$.
+\item Intentar encontrar estados metaestables (asimétricos).
+\end{itemize}   
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados de Mattis}
+\begin{itemize}
+\item Sistema sencillo, red cuadrada $9 \times 9$ ($N = 81$).
+\item Dos estados de memoria: \textit{cara feliz} y \textit{cara triste}.
+\begin{columns}
+\column{.5\textwidth}
+\includegraphics[scale = 0.3]{state_9x9_1.png}
+\column{.5\textwidth}
+\includegraphics[scale = 0.3]{state_9x9_2.png}
+\end{columns}
+\item Se ejecutarán 11 simulaciones desde el mismo estado inicial aleatorio para distintos valores de $T$. El número de steps será siempre 100000.
+
+\end{itemize}   
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados de Mattis}
+Para $T = 0$
+\includegraphics[width=\linewidth]{9x9_T=0.png}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados de Mattis}
+Para $T = 0.2$
+\includegraphics[width=\linewidth]{9x9_T=0,2.png}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados de Mattis}
+Para $T = 0.5$
+\includegraphics[width=\linewidth]{9x9_T=0,5.png}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados de Mattis}
+Para $T = 1.2$
+\includegraphics[width=\linewidth]{9x9_T=1,2.png}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Transición de fase}
+\begin{itemize}
+\item Comportamiento cerca de la temperatura crítica $T_{c} = 1$.
+\item Parámetro de orden $\longrightarrow$ \textit{Overlap}
+$$
+m^{\mu} = N^{-1} \left| \sum_{i=1}^{N} \langle S_{i} \rangle \mathcal{P}^{\mu}_{i}  \right|
+$$
+\item Se utilizará sólo un estado de memoria para distintos tamaños de la red.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Transición de fase}
+\includegraphics[width=\linewidth]{Overlap_FSS.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Transición de fase}
+Observaciones:
+\begin{itemize}
+\item Difícil encontrar puntos donde se haya alcanzado el LT.
+\item Cualitativamente $\longrightarrow$ Separación entre dos regiones: ordenada y caótica (no se guarda memoria).
+\item Hipótesis $\longrightarrow$ No analiticidad en $T = 1$ en el LT $\longrightarrow$ Transición de segundo orden.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+\begin{itemize}
+\item Red cuadrada $10 \times 10$ ($N = 100$).
+\item Tres estados de memoria:
+\begin{columns}
+\column{.33\textwidth}
+\includegraphics[width=\linewidth]{state_10x10_1.png}
+\column{.33\textwidth}
+\includegraphics[width=\linewidth]{state_10x10_2.png}
+\column{.33\textwidth}
+\includegraphics[width=\linewidth]{state_10x10_3.png}
+\end{columns}
+\item Para cada simulación se representa la evolución del módulo de la \textit{magnetización} del sistema, así como su energía.
+$$
+|M|(\{ S\}) = N^{-1} \left| \sum_{i=1}^{N} S_{i} \right|
+$$
+
+\end{itemize}   
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+Ejemplo para $T = 0$.
+\begin{columns}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{example_magnet.png}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{example_ener.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+Estado metaestable para $T = 0$.
+\begin{columns}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{magnet_meta_T=0,0.png}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{ener_meta_T=0,0.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+Estado metaestable para $T = 0$.
+\begin{columns}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{meta_T=0,0.png}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{Metastable_overlap.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+Estado metaestable para $T = 0.1$.
+\begin{columns}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{magnet_meta_T=0,1.png}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{ener_meta_T=0,1.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+Estado metaestable para $T = 0.2$.
+\begin{columns}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{magnet_meta_T=0,2.png}
+\column{.5\linewidth} \includegraphics[width=\linewidth]{ener_meta_T=0,2.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulación de Montecarlo}
+\framesubtitle{Estados metaestables}
+\begin{columns}
+\column{.5\linewidth}
+Estado metaestable para $T = 0.1$.
+\includegraphics[width=\linewidth]{meta_T=0,1.png}
+\column{.5\linewidth}
+Estado metaestable para $T = 0.2$.
+\includegraphics[width=\linewidth]{meta_T=0,2.png}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
 \frametitle{Ecuación de Langevin}
 \framesubtitle{Formulación continua}
 \begin{itemize}
