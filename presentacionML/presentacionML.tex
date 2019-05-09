@@ -1,7 +1,7 @@
 \documentclass[11pt]{beamer}
 
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage[spanish, es-nodecimaldot]{babel}
 \usepackage{amsmath}
 \usepackage{cancel}
 \usepackage{graphicx}
@@ -482,6 +482,58 @@ Estado metaestable para $T = 0.2$.
 
 \begin{frame}
 \frametitle{Ecuación de Langevin}
+\framesubtitle{Resultados}
+\begin{itemize}
+	\item Invertimos $N/m$ espines ($m \le 2$)
+	\item El sistema evoluciona a los estados ``guardados'' en  $J_{ij}$\\
+	\centering
+	\includegraphics[width=0.75\linewidth]{evolucion_langevin-0.png}
+	\includegraphics[width=0.75\linewidth]{evolucion_langevin-1.png}
+	\item  $g(\sigma(t)) - \sigma(t) \rightarrow 0$ (condicion estacionaria)
+	\centering
+	\includegraphics[width=0.45\linewidth]{convergencia_langevin.png}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ecuación de Langevin}
+\framesubtitle{Resultados}
+\begin{itemize}
+	\item Los espines convergen a $\sqrt{1+\frac{1}{\lambda}}$ (gráficas normalizadas)
+	\item Los solapamientos tienden a $1$ para el patrón 
+	\centering
+	\includegraphics[width=0.45\linewidth]{spines_langevin.png}
+	\includegraphics[width=0.45\linewidth]{overlap_langevin.png}
+\end{itemize}
+\end{frame}
+
+% Estos estados están para
+%L = 16
+%N = L**2 = 256
+%K = 4
+%dt = 0.01
+%lamb = 0.4
+%T = 0.0
+%nsteps = 1500
+%naverage = 10
+%N/2.5 spines flipeados
+
+\begin{frame}
+\frametitle{Ecuación de Langevin}
+\framesubtitle{¿Estados metaestables?}
+\begin{itemize}
+	\item Los estados se desvían de $\pm 1$. Promedio sobre 10 realizaciones
+	\item Aparecen múltiples solapamientos
+	\includegraphics[width=0.45\linewidth]{spines_metaestable1_langevin.png}
+	\includegraphics[width=0.45\linewidth]{overlap_metaestable1_langevin.png}
+	\includegraphics[width=0.45\linewidth]{spines_metaestable2_langevin.png}
+	\includegraphics[width=0.45\linewidth]{overlap_metaestable2_langevin.png}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Ecuación de Langevin}
 \framesubtitle{Valor de $\lambda$}
 \begin{itemize}
 	\item Valores demasiado grandes de $\lambda$ hacen que no haya evolución
@@ -500,19 +552,6 @@ Estado metaestable para $T = 0.2$.
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Ecuación de Langevin}
-\framesubtitle{Resultados}
-\begin{itemize}
-	\item El sistema evoluciona a los estados ``guardados'' en  $J_{ij}$\\
-	\centering
-	\includegraphics[width=0.75\linewidth]{evolucion_langevin-0.png}
-	\includegraphics[width=0.75\linewidth]{evolucion_langevin-1.png}
-	\item  $g(\sigma(t)) - \sigma(t) \rightarrow 0$ (condicion estacionaria)
-	\centering
-	\includegraphics[width=0.45\linewidth]{convergencia_langevin.png}
-\end{itemize}
-\end{frame}
 \begin{frame}
 \frametitle{Ecuación de Langevin}
 \framesubtitle{Elección de V}
@@ -536,9 +575,10 @@ Estado metaestable para $T = 0.2$.
 \frametitle{Ecuación de Langevin}
 \framesubtitle{Almacenamiento de patrones}
 
- Recorremos todos los estados iniciales
-	\includegraphics[scale=0.3]{k2l9lambda3t0}
-	\includegraphics[scale=0.3]{k2l9lambda3t10}
+ Recorremos todos los estados iniciales\hspace{5cm}
+
+	\includegraphics[width=0.45\linewidth]{k2l9lambda3t0}
+	\includegraphics[width=0.45\linewidth]{k2l9lambda3t10}
 
 \end{frame}
 
@@ -559,8 +599,8 @@ Estado metaestable para $T = 0.2$.
 \framesubtitle{Almacenamiento de patrones}
 \begin{center}
     Cálculo en redes más grandes\\
-	\includegraphics[scale=0.45]{k10l70lambda3t100.png}
-	\includegraphics[scale=0.45]{k10l70lambda2t1e5.png}
+	\includegraphics[width=0.45\linewidth]{k10l70lambda3t100.png}
+	\includegraphics[width=0.45\linewidth]{k10l70lambda2t1e5.png}
 \end{center}
  
 	
