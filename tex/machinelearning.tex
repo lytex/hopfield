@@ -152,8 +152,66 @@
 	si introducimos esta solución en \eqref{meanfieldoverlap} tenemos $m=\left<(\mathcal{P}_i^1)^2\tanh(\beta m)\right>_{\mathcal{P}}$. Cómo $\mathcal{P}^\mu_i=\pm 1$, esto se convierte en $m=\left<\tanh(\beta m)\right>_{\mathcal{P}}$ y, por último, al no aparecer los estados de los patrones, el promedio desaparece. Hemos recuperado \eqref{mIsinglike}. 
 	
 	El estado \eqref{mattisstate} es equivalente termodinámicamente al estado ferromagnético del modelo de Ising. Existen $2K$ estados de este tipo correspondientes a distintas $\mu$ y a distintos signos de las componentes $m^\mu$. Estos estados se denominan estados de Mattis.
+	\\
 	
-	Para $n>1$, también pueden existir soluciones, pero estos estados serán mínimos locales de la energía libre y no globales. Serán los estados metaestables del sistema, y las $n$ componentes de $\vec{m}$ satisfacerán $m^\mu<1$; esto implica que los estados metaestables serán mezclas de los patrones suministrados a través de los pesos \eqref{Jint}.
+	Los estados de Mattis son mínimos globales de la energía libre para $T=0$. Podemos probar esto para el estado anterior \eqref{mattisstate}, que correspondía al caso $n=1$. Dado que en $T=0$, $\beta=\infty$, para evaluar \eqref{mIsinglike} en $T=0$ necesitamos el siguiente límite, teniendo en cuenta que $m>0$.
+	\begin{equation}
+	\lim_{x\rightarrow\infty}\tanh mx =\lim_{x\rightarrow\infty} \frac{e^{mx} - \cancel{e^{-mx}}}{e^{mx} + \cancel{e^{-mx}}}=\lim_{x\rightarrow\infty} \frac{e^{mx}}{e^{mx}}=1
+	\label{lim1}
+	\end{equation}
+	De modo que:
+	\begin{equation}
+	m_{(n=1)}(T=0)=\lim_{\beta\rightarrow\infty}\tanh(\beta m)=1
+	\label{mMattisT0}
+	\end{equation}
+	Para evaluar ahora la energía libre necesitamos el siguiente límite:
+	\begin{equation}
+	\lim_{x\rightarrow\infty}\frac{1}{x}\log\left(2\cosh mx\right)=\lim_{x\rightarrow\infty}\frac{1}{x}\log\left(e^{mx} + e^{-mx}\right)=\lim_{x\rightarrow\infty}\frac{1}{x}\log\left(e^{mx} + \cancel{e^{-mx}}\right)=1
+	\label{lim2}
+	\end{equation}
+	Tomando ahora el resultado \eqref{mMattisT0} e introduciéndolo en \eqref{fIsinglike}, junto con el límite \eqref{lim2}:
+	\begin{equation}
+	f_{(n=1)}(T=0)=\frac{1}{2}-\lim_{T\rightarrow0}T\log\left[2\cosh(\beta m)\right]=\frac{1}{2} - 0\cdot1=\frac{1}{2}
+	\label{fMattisT0}
+	\end{equation}
+	
+	Veamos ahora que efectivamente \eqref{fMattisT0} es el valor mínimo que puede tomar la energía libre. Para ello tendremos que tomar el límite $T\rightarrow0$ en las ecuaciones de campo medio, \eqref{meanfieldf} y \eqref{meanfieldm}. Para ello, necesitaremos generalizar los límites \eqref{lim1} y \eqref{lim2} al caso dónde el coeficiente que acompaña a $x$ sea negativo; en tal caso \eqref{lim1} cambia de signo mientras que \eqref{lim2} se mantiene igual. De esta manera tenemos:
+	\begin{align*}
+	\lim_{T\rightarrow0}T\log&\left[2\cosh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right]=\vec{m}\cdot\vec{\mathcal{P}_i} \\
+	\lim_{T\rightarrow0}\tanh&\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)=\textnormal{sgn}\,(\vec{m}\cdot\vec{\mathcal{P}_i})
+	\end{align*}
+	Introduciendo estos resultados en las ecuaciones de campo medio \eqref{meanfieldf} y \eqref{meanfieldm}, y evaluando en $T=0$:
+	\begin{equation}
+	f_{\textnormal{CM}}(T=0)=\frac{1}{2}\vec{m}^2
+	\label{fgs}
+	\end{equation}
+	\begin{equation}
+	\vec{m}_{\textnormal{CM}}(T=0)=\left<\vec{\mathcal{P}_i}\tanh\left(\frac{\vec{m}\cdot\vec{\mathcal{P}_i}}{T}\right)\right>_{\mathcal{P}}
+	\label{mgs}
+	\end{equation}
+	Veamos ahora que existe una cota para $\vec{m}^2$. Amit et. al. \cite{amit1} encuentran dicha cota utilizando la desigualdad de Cauchy-Schwarz. Sin embargo, dado que en las secciones posteriores utilizaremos redes finitas, podemos encontrar esta cota de una forma más sencilla utilizando la cota:
+	\begin{equation}
+	\sum_{\mu=1}^K |m^\mu|\leq 1
+	\label{m-bound}
+	\end{equation}
+	Esta cota es debida a que, para dimensionalidades $n>1$, carece de sentido considerar que la red pueda replicar exactamente más de un patrón a la vez (al menos para las redes finitas y sencillas que aquí utilizaremos, que cómo mucho reproducirán un patrón o mezclas de ellos), y podremos utilizarla para encontrar la cota de $\vec{m}^2$. Elevando \eqref{m-bound} al cuadrado: 
+	\begin{displaymath}
+	\left(\sum_{\mu=1}^K |m^\mu|\right)^2\leq 1
+	\end{displaymath}
+	por otro lado:
+	\begin{displaymath}
+	\left(\sum_{\mu=1}^K |m^\mu|\right)^2\geq\sum_{\mu=1}^K (m^\mu)^2=\vec{m}^2
+	\end{displaymath}
+	y combinando ambos resultados obtenemos la cota que buscábamos para $\vec{m}^2$:
+	\begin{displaymath}
+	\vec{m}^2\leq 1
+	\end{displaymath}
+	Para este cálculo hemos sumado sobre $K$, pero igualmente podríamos haber sumado sobre $n$ obteniendo los mismos resultados, puesto que las $K-n$ componentes de $\vec{m}$ que ignoraríamos serían nulas.
+	\\
+	
+	La igualdad $\vec{m}^2=1$ sólo se satisface si $n=1$, cuando sólo existe una solución $m^1=m$. Este es el caso que hemos tratado anteriormente, dónde hemos obtenido para el estado de Mattis la energía libre a $T=0$ \eqref{fMattisT0}; y si sustituimos ahora $\vec{m}^2=1$ en \eqref{fgs}, tenemos $f_{\textnormal{CM}}(T=0)=f_{(n=1)}(T=0)=1/2$.
+	
+	Aunque sólo hemos probado que los estados de Mattis son los mínimos globales de $f$ para $T=0$, también es posible probar que lo son para $T=1$. De hecho, lo son en todo el rango de temperaturas $0\leq T\leq1$. El significado de esto es que los estados de Mattis son los estados estables del sistema; además, se corresponden a la reproducción de un patrón por la red, por lo que concluimos que los estados estables del sistema son aquellos en los que se recupera uno de los patrones. Sin embargo, también existen estados metaestables; estos se corresponden a soluciones con $n>1$, que serán mínimos locales de la energía libre.
 	\section{Ecuación de Langevin para la dinámica de los espines}
 	En la sección 1, hicimos un breve comentario sobre la dinámica de los espines, donde establecimos que si un estado es parcialmente similar a aquellos que forman el patrón, la dinámica llevará los espines a dichos estados estacionarios. Feigelman et. al. \cite{feigelman86} proponen la ecuación de Langevin que gobierna esta dinámica. 
 	
@@ -165,14 +223,14 @@
 	
 	Las ecuaciones de movimiento dadas por \eqref{Hfeigelman} serán equivalentes a las ecuaciones de Langevin para la evolución de los espines $\sigma_i$. Estas son \cite{feigelman86}:
 	\begin{equation}
-	\frac{\partial\sigma_i}{\partial t} = -\frac{\partial V(\sigma_i)}{\partial\sigma_i} + \sum_j J_{ij}\sigma_i + h_i\sigma_i + \xi_i(t)
+	\frac{\partial\sigma_i}{\partial t} = -\frac{\partial V(\sigma_i)}{\partial\sigma_i} + \sum_j J_{ij}\sigma_j + h_i\sigma_i + \xi_i(t)
 	\label{langevin}
 	\end{equation}
 	En esta dinámica gobernada por \eqref{langevin} los patrones serán estados estables con un rango de atracción en el espacio de configuración, de modo que si un estado inicial $\tilde{\sigma_i}$ es parcialmente similar a uno de los estados estacionarios que $\sigma_i$ conforman el patrón, la dinámica llevará $\tilde{\sigma_i}$ a $\sigma_i$; este es el mecanismo mediante el cual la red recuerda el patrón.\\
 	
 	Estudiemos ahora los distintos términos de \eqref{langevin}. En estas ecuaciones aparece la derivada del potencial que hemos introducido anteriormente, ${\partial V(\sigma_i)}/{\partial \sigma_i}$. La razón de ser de este término es asegurar que (al menos casi siempre) el valor dado por esta ecuación para los espines sea $\sigma_i=\pm 1$. Una posible elección de este potencial es $V(\sigma_i)=\lambda\left(\sigma_i^2-1\right)^2$. Cuando el potencial toma esta forma, resolver la dinámica nos lleva al resultado:
 	\begin{displaymath}
-	\sigma_i = \pm\sqrt{\frac{1}{1 + e^{-8\lambda t}}}\rightarrow\pm 1
+	\sigma_i = \frac{\pm 1}{\sqrt{1-e^{-2\lambda t}}} \xrightarrow[t \rightarrow \infty]{}\pm 1
 	\end{displaymath}
 	es decir, vemos que en el límite asintótico de tiempos infinitos, los valores de los espines son los esperados, $\pm 1$. Si se utilizan otros potenciales (por ejemplo cuadráticos en vez de cuárticos) se puede comprobar que este comportamiento puede no replicarse, por eso es necesario introducir el potencial para que la dinámica sea coherente con las reglas del modelo. Por otro lado, el parámetro $\lambda$ debe ser positivo; en el caso de que fuera negativo los espines convergerían a $0$, y en el caso de que fuera $\lambda = 0$ (no hay potencial) los valores crecen sin control. Pero también necesitamos que tenga valores grandes respecto a $1$: se puede comprobar que el valor al que convergen los espines para un valor de $\lambda$ dado es:
 	\begin{displaymath}
