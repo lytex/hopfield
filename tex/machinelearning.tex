@@ -228,11 +228,18 @@
 	\end{equation}
 	En esta dinámica gobernada por \eqref{langevin} los patrones serán estados estables con un rango de atracción en el espacio de configuración, de modo que si un estado inicial $\tilde{\sigma_i}$ es parcialmente similar a uno de los estados estacionarios que $\sigma_i$ conforman el patrón, la dinámica llevará $\tilde{\sigma_i}$ a $\sigma_i$; este es el mecanismo mediante el cual la red recuerda el patrón.\\
 	
-	Estudiemos ahora los distintos términos de \eqref{langevin}. En estas ecuaciones aparece la derivada del potencial que hemos introducido anteriormente, ${\partial V(\sigma_i)}/{\partial \sigma_i}$. La razón de ser de este término es asegurar que (al menos casi siempre) el valor dado por esta ecuación para los espines sea $\sigma_i=\pm 1$. Una posible elección de este potencial es $V(\sigma_i)=\lambda\left(\sigma_i^2-1\right)^2$. Cuando el potencial toma esta forma, resolver la dinámica nos lleva al resultado:
+	Estudiemos ahora los distintos términos de \eqref{langevin}. En estas ecuaciones aparece la derivada del potencial que hemos introducido anteriormente, ${\partial V(\sigma_i)}/{\partial \sigma_i}$. La razón de ser de este término es asegurar que (al menos casi siempre) el valor dado por esta ecuación para los espines sea $\sigma_i=\pm 1$.
+	\begin{center}
+	    \includegraphics[scale=0.5]{potencial}\\
+	  \begin{small}
+	  Dinámica del potencial con convergencia en $\sigma=\pm2$. Se ha usado un valor diferente a 1 (el usado en el trabajo) para exponer el comportamiento de dicha dinámica de un modo más general.
+	\end{small}
+	\end{center}
+	La elección de este potencial es $V(\sigma_i)=\lambda\left(\sigma_i^2-1\right)^2$. Cuando el potencial toma esta forma, resolver la dinámica nos lleva al resultado:
 	\begin{displaymath}
 	\sigma_i = \frac{\pm 1}{\sqrt{1-e^{-2\lambda t}}} \xrightarrow[t \rightarrow \infty]{}\pm 1
 	\end{displaymath}
-	es decir, vemos que en el límite asintótico de tiempos infinitos, los valores de los espines son los esperados, $\pm 1$. Si se utilizan otros potenciales (por ejemplo cuadráticos en vez de cuárticos) se puede comprobar que este comportamiento puede no replicarse, por eso es necesario introducir el potencial para que la dinámica sea coherente con las reglas del modelo. Por otro lado, el parámetro $\lambda$ debe ser positivo; en el caso de que fuera negativo los espines convergerían a $0$, y en el caso de que fuera $\lambda = 0$ (no hay potencial) los valores crecen sin control. Pero también necesitamos que tenga valores grandes respecto a $1$: se puede comprobar que el valor al que convergen los espines para un valor de $\lambda$ dado es:
+	es decir, vemos que en el límite asintótico de tiempos infinitos, los valores de los espines son los esperados, $\pm 1$. La elección de este potencial está basado en imponer las condiciones de convergencia, de modo que si se utilizan otros potenciales (por ejemplo cuadráticos en vez de cuárticos) se puede comprobar que este comportamiento puede no replicarse, por eso es necesario introducir el potencial usado para que la dinámica sea coherente con las reglas del modelo. Por otro lado, el parámetro $\lambda$ debe ser positivo; en el caso de que fuera negativo los espines convergerían a $0$, y en el caso de que fuera $\lambda = 0$ (no hay potencial) los valores crecen sin control. Pero también necesitamos que tenga valores grandes respecto a $1$: se puede comprobar que el valor al que convergen los espines para un valor de $\lambda$ dado es:
 	\begin{displaymath}
 	|\sigma_i|_{estacionario}=\sqrt{1 + \frac{1}{\lambda}}
 	\end{displaymath}
@@ -255,7 +262,8 @@
 		\captionof{figure}{Arriba, la evolución de la red desde el estado desordenado P0 hasta el estado final P9. Abajo, el estado final de la red (izquierda) junto al patrón almacenado (derecha). Vemos que la red ha conseguido reproducir exitosamente el patrón.} \label{ejemplo}
 	\end{center}
 	\subsection{Simulación numérica de la dinámica}
-	En esta sección presentamos una simulación numérica llevada a cabo en Python, utilizando el paquete \verb|neurodynex| proporcionado en \cite{neurodyn-ex}.
+	%En esta sección presentamos una simulación numérica llevada a cabo en Python, utilizando el paquete \verb|neurodynex| proporcionado en \cite{neurodyn-ex}.
+	Anteriormente se han expuesto imágenes resultantes de la simulación de la ecuación de Langevin en python usando el paquete \verb|neurodynex| proporcionado en \cite{neurodyn-ex}. En esta sección se estudiará la dinámica del sistema en profundidad utilizando Matlab.
 	
 	Para poder tratar el problema de este modo, el primer paso que hemos de tomar es traducir la ecuación diferencial \eqref{langevin} a una de diferencias finitas. Como ya comentamos en la sección 1, la dinámica de la red neuronal evoluciona por pasos temporales finitos, la dinámica de decaimiento exponencial debe ser rápida (en tiempos de orden $1$), mientras que la dinámica debida al modelo de Ising debe ser lenta.
 	\begin{displaymath}
@@ -266,10 +274,36 @@
 	\sigma_i(t+dt) = g(\sigma_i(t)) = \left(  -\lambda(\sigma_i^2 - 1)\sigma_i +  \sum_j J_{ij} \sigma_j + h_i\sigma_i \right) dt + \sqrt{2T}dW + \sigma_i(t)
 	\label{dynfunc}
 	\end{equation}
-	de forma que $g (\sigma_i(t))$ será la función dinámica que utilicemos en el cálculo. Para convertir la ecuación de Langevin en una ecuación diferencial estocástica, hemos introducido el diferencial estocástico $dW$ que cumple:
+	de forma que $g (\sigma_i(t))$ será la función dinámica que utilicemos en el cálculo. Para convertir la ecuación de Langevin en una ecuación diferencial estocástica, hemos introducido el diferencial estocástico $dW$ cuyos dos primeros momentos (media y desviación) cumplen:
 \begin{equation*}
 \mu(dW) = 0, \hspace{10mm} \sigma^2(dW) = dt
 \end{equation*}
+
+A la hora de calcular los resultados, tenemos que reescalar este termino dW para que la temperatura sea independiente de la elección de $\lambda$, ya que si no, una elección de $\lambda$ pequeño hará que el sistema no responda a temperaturas altas. Dicho escalado será $dW \rightarrow \sqrt{1+\frac{1}{\lambda}}dW$, y así tendremos un comportamiento independiente entre la temperatura y $\lambda$.\\
+Por consiguiente, cuando el sistema llegue al equilibrio, dividiremos los estados entre $ \sqrt{1+\frac{1}{\lambda}}$ para recuperar los valores $\pm 1$.\\
+A la hora de seleccionar los términos multiplicados por dt, para el primero (el potencial) elegimos un $\lambda$ arbitrario (0.01) y $h_i=\vec{0}$ (para que el sistema evolucione libremente). La elección de $J_{ij}$ es importante, ya que hay que construirla a partir de los patrones que queremos que el sistema memorice. Para esto tenemos que tener en cuenta que existe una cantidad máxima de estados que el sistema puede almacenar sin presentar un estado de memoria caótica (en el cual se pierden los estados almacenados), determinado por la fórmula:
+\begin{equation*}
+    Q= \frac{L}{ln(L^2)}
+\end{equation*}
+Una vez tenemos todo preparado, estudiaremos como evoluciona el sistema ante diferente número de patrones y a diferentes T en una red con una longitud de LxL. Para esto queremos recorrer todos los estados iniciales y mediremos la cantidad de estados finales que no coinciden con los esperados, ya que esperamos que los estados estacionarios sean igual a los patrones que hemos usado para construir la matriz $J_{ij}$. Al ser esto computacionalmente muy costoso, elegimos una cantidad suficientemente grande de diferentes estados iniciales de manera aleatoria. Lo cual nos permite visualizar el comportamiento del sistema.\\
+
+Para una red de 8x8, obtenemos:\\
+\begin{center}
+    \includegraphics[scale=0.3]{dinamicaL8.png}
+\end{center}
+
+Vamos a comentar todo lo que observamos en esta gráfica.\\
+En primer lugar, para una red de L=8 el número máximo de patrones que podemos almacenar sin obtener fallos serán dos. Sin embargo, no observamos que esto ocurra para T=0, sino para T no nulas muy pequeñas. Esto ocurre debido a que, si el estado inicial es ortogonal a alguno de los patrones almacenados, todos los términos de la evolución temporal se van a anular y el sistema no evoluciona. Sin embargo, si aplicamos una perturbación muy pequeña, la evolución temporal será diferente de cero y el sistema sí evolucionará como queremos.\\
+A medida que aumentamos el número de patrones almacenados en la red, perdemos la capacidad de almacenamiento y el número de errores aumenta para cualquier temperatura. Cuando el número de patrones es muy alto, el sistema no guarda ningún estado de memoria. Esto es debido porque todos los estados iniciales serán ortogonales a alguno de los patrones almacenados y por tanto no hay ningún tipo de evolución. Aún aumentando la temperatura, tampoco se reduce el número de errores. Esto es lo que denominamos régimen caótico de memoria.\\
+Por otro lado, tenemos una variación del número de errores medidos en el sistema respecto a la temperatura, donde al aumentar este parámetro lo suficiente, el sistema tiene problemas al alcanzar el estado de equilibrio, produciendo que aumente el número de errores. \textbf{es importante destacar} que para T alta, cada gráfica tiene un número diferente de errores porque se han usado un \textbf{número diferente de estados iniciales}.\\
+Vamos a ver también la dinámica para una red mayor, con L=64:\\
+\begin{center}
+     \includegraphics[scale=0.2]{dinamicaL64}
+     \includegraphics[scale=0.2]{dinamicaL64Talta}
+ \end{center}
+ Podemos ver que se reproducen los mismos comportamientos, aunque admite una cantidad mayor de patrones almacenados antes de llegar a su régimen caótico, y es capaz de tolerar la T para un número de patrones mayor que el caso L=8 , esta red no reduce a cero el número de errores, aunque sí los mantiene acotados.\\
+ Para concluir esta sección, hemos visto que la evolución de la ecuación de Langevin se comportan de una manera esperada, aunque nos encontramos problemas con los estados ortogonales (lo cual nos impide evolucionar el sistema en ciertos casos como hemos visto), el sistema sí que guarda los patrones que introducimos, y evoluciona hasta estos.
+
 	\begin{thebibliography}{9}
 		\bibitem[1]{hopfield82}{J. J. Hopfield, \textit{Neural networks and physical systems with emergent collective computational abilities}, Proc. Natl. Acad. Sci. USA, \textbf{79}, 2554-2558, abril de 1982.}
 		\bibitem[2]{neurodyn}{W. Gerstner, W. M. Kistler, R. Naud, L. Paninski, \textit{Neuronal Dynamics}, Cambridge University Press, 2014, \href{https://neuronaldynamics.epfl.ch/online/index.html}{https://neuronaldynamics.epfl.ch/online/index.html}.}
