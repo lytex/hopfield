@@ -5,8 +5,9 @@
 \usepackage[spanish]{babel}
 \usepackage{cancel}
 \usepackage{graphicx}
-\usepackage{subfig}
+\usepackage{subcaption}
 \usepackage{caption}
+\usepackage{float} % colocar donde quieras las figuras con [H]
 \usepackage{lipsum}
 \usepackage{mathtools}
 \usepackage{amsmath}
@@ -36,7 +37,7 @@
 	\Phi_i(t)=\sum_{j\neq i} J_{ij}\sigma_j
 	\end{displaymath}
 	El fin de estas redes es el almacenamiento y la reproducción de patrones. Podemos definir un patrón $\mu$ como una configuración dada de la red, $\mathcal{P}^\mu_i = \pm1, i \in[1,N]$. Entonces, considerando que la evolución de los estados neuronales se da en pasos temporales finitos $\Delta t$, la red habrá reproducido correctamente el patrón $\mu$ si $\sigma_i(t)=\sigma_i(t+\Delta t)=\mathcal{P}^\mu_i$; o dicho de otro modo, los patrones deberán ser puntos fijos de la dinámica. En general, consideraremos que la red almacena un número $K$ de patrones, de modo que $\mu\in[1,K]$. También consideraremos que los patrones sean ortogonales, de modo que:
-	\begin{equation}
+	\begin{equation} \label{ortogonal}
 	\frac{1}{N}\sum_{i=1}^N \mathcal{P}^\mu_i \mathcal{P}^\nu_i = \delta^{\mu\nu}
 	\label{ortpat}
 	\end{equation}
@@ -56,7 +57,7 @@
 	que toma el valor máximo $m^\mu = 1$ cuando la red reproduce exactamente el patrón, es decir, $\sigma_i = \mathcal{P}^\mu_i\hspace{0.2cm}\forall i$.
 	
 	Estos estados estacionarios vienen determinados por la forma de los pesos de la interacción $J_{ij}$, es decir, son los responsables del almacenamiento de los patrones $\mathcal{P}^\mu_i$. Recordemos que hemos elegido el caso simétrico, $J_{ij}=J_{ji}$. Estos pesos pueden interpretarse como elementos de una matriz. Si queremos que nuestra red sea capaz de reproducir (recordar) un número $K$ de patrones $\mathcal{P}^\mu_i$ previamente almacenados, buscamos que los $J_{ij}$ establezcan una correlación entre los estados y el patrón. Para ello, la forma más simple que pueden tomar es:
-	\begin{equation}
+	\begin{equation} \label{J-eq}
 	J_{ij}=\frac{1}{N}\sum_{\mu=1}^K \mathcal{P}^\mu_i \mathcal{P}^\mu_j
 	\label{Jint}
 	\end{equation}
@@ -197,7 +198,7 @@
 	Esta cota es debida a que, para dimensionalidades $n>1$, carece de sentido considerar que la red pueda replicar exactamente más de un patrón a la vez (al menos para las redes finitas y sencillas que aquí utilizaremos, que cómo mucho reproducirán un patrón o mezclas de ellos), y podremos utilizarla para encontrar la cota de $\vec{m}^2$. Elevando \eqref{m-bound} al cuadrado: 
 	\begin{displaymath}
 	\left(\sum_{\mu=1}^K |m^\mu|\right)^2\leq 1
-	\end{displaymath}
+	\end{displaymath}C
 	por otro lado:
 	\begin{displaymath}
 	\left(\sum_{\mu=1}^K |m^\mu|\right)^2\geq\sum_{\mu=1}^K (m^\mu)^2=\vec{m}^2
@@ -212,6 +213,205 @@
 	La igualdad $\vec{m}^2=1$ sólo se satisface si $n=1$, cuando sólo existe una solución $m^1=m$. Este es el caso que hemos tratado anteriormente, dónde hemos obtenido para el estado de Mattis la energía libre a $T=0$ \eqref{fMattisT0}; y si sustituimos ahora $\vec{m}^2=1$ en \eqref{fgs}, tenemos $f_{\textnormal{CM}}(T=0)=f_{(n=1)}(T=0)=1/2$.
 	
 	Aunque sólo hemos probado que los estados de Mattis son los mínimos globales de $f$ para $T=0$, también es posible probar que lo son para $T=1$. De hecho, lo son en todo el rango de temperaturas $0\leq T\leq1$. El significado de esto es que los estados de Mattis son los estados estables del sistema; además, se corresponden a la reproducción de un patrón por la red, por lo que concluimos que los estados estables del sistema son aquellos en los que se recupera uno de los patrones. Sin embargo, también existen estados metaestables; estos se corresponden a soluciones con $n>1$, que serán mínimos locales de la energía libre.
+	
+	\section{Simulaciones de redes Hopfield con métodos de Montecarlo}
+	Esta sección está dedicada a exponer los resultados obtenidos a partir de diversas simulaciones utilizando métodos aleatorios (de Montecarlo). En la primera subsección se explicará la metodología utilizada por el algoritmo así como los objetivos que se pretenden alcanzar con estas simulaciones, cuyos resultados se presentarán en el resto de subapartados.
+	\subsection{Metodología y objetivos}
+	Como se comentó anteriormente, para las simulaciones se echará mano de métodos aleatorios, más en concreto del \textit{Algoritmo de Metrópolis}. \\
+	Se comenzará con una configuración inicial de $N$ espines $\{ S_{\text{in}} \}$ aleatoriamente dispuestos. 
+	Cada simulación contará con un número concreto de pasos (\textit{steps}), en cada step se volteará aleatoriamente uno de estos espines, la nueva configuración con el espín volteado se denotará como $\{ S_{\text{new}}\}$. La energía de cada configuración viene dada por la ecuación (\ref{Hamiltonian}), de modo que la diferencia de energías es:
+	\begin{equation}
+	    \Delta E = E(\{S_{\text{new}}\}) - E(\{S_{\text{in}}\})
+	\end{equation}
+	Entonces la probabilidad de que el paso sea aceptado será la siguiente:
+	\begin{equation}
+	    P_{\text{change}} = \left\{
+\begin{aligned}
+    1 \ \ \ \ \text{si} \ \ \Delta E \leq 0 \\
+    \text{e}^{-\Delta E/T} \ \ \ \ \text{si} \ \ \Delta E > 0
+\end{aligned}
+\right.
+    \end{equation}
+En el caso de $T = 0$ sólo se aceptan los pasos con $\Delta E < 0$. En el caso de aceptar el paso se repite el proceso tomando como configuración inicial la nueva $\{ S_{\text{new}} \}$.
+\\
+Para definir los acoplos que se utilizarán en (\ref{HIsing}) para calcular estas energías se definirán previamente $K$ estados de memoria $\{\mathcal{P}^{\mu}\}$, con lo que las constantes $J_{ij}$ se calcularán según (\ref{J-eq}).
+\\
+\\
+El fin de estas simulaciones es constatar la veracidad del análisis de campo medio de la sección anterior en el ámbito práctico, esto es, cuando se trabaja con un número finito $N$ de espines. Para ello se proponen los siguientes objetivos a comprobar:
+\begin{itemize}
+    \item Existencia de $2K$ estados de Mattis estables que equivalgan a los estados de memoria introducidos y a sus análogos con magnetización (suma de espines) opuesta.
+    \item Estudiar el comportamiento de la red al variar $T$ (variar el \textit{ruido}).
+    \item Identificar la transición de fase a $T_{c} = 1$ entre la región con memoria y la región caótica.
+    \item Encontrar estados metaestables.
+\end{itemize}
+Finalmente se redactará una conclusión en función de lo obtenido, argumentando la validez o invalidez del desarrollo de las secciones previas a casos realistas.
+	\subsection{Estados de Mattis y efecto del ruido}
+	A continuación se tratará de comprobar la existencia de los $2K$ estados de Mattis como mínimos estables de la red. Además se aprovechará para estudiar el efecto del ruido sobre la evolución de estados iniciales aleatorios.
+	\\
+	Se trabajará con una red $9 \times 9$, es decir, $N = 81$ con dos estados de memoria ($K = 2$). Los dos estados escogidos son los representados en la figura \ref{faces}, uno de ellos representando una cara feliz y el otro una cara triste\footnote{Estos estados de memoria no cumplen la condición de ortogonalidad enunciada en (\ref{ortogonal}). Sin embargo, éste requisito no es necesario a la hora de identificar los estados de Mattis, como se verá a continuación.}.
+	\begin{figure}
+	    \centering
+	    \begin{subfigure}{.5\textwidth}
+	    \centering
+	    \includegraphics[width=.75\linewidth]{state_9x9_1.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.5\linewidth}
+	    \centering
+	    \includegraphics[width=.75\linewidth]{state_9x9_2.png}
+	    \end{subfigure}%
+	    \caption{Estados de memoria de una red $9 \times 9$ ($N = 81$).}
+	    \label{faces}
+	\end{figure}
+	\\
+	\\
+    Como procedimiento se realizarán 11 simulaciones a una temperatura fija $T$, todas partiendo del mismo estado inicial aleatorio. En total cada simulación contará con 100000 steps de Montecarlo y se tomará únicamente la información del estado final tras todos los pasos.
+    \\
+    Para $T = 0$ (en ausencia de ruido) los resultados están representados en la figura de la izquierda de \ref{Mattis-Low-T}. Cada cuadro representa el estado final de la red tras los 100000 steps de una simulación distinta, salvo el cuadro que se encuentra en la esquina superior izquierda, que representa el estado inicial de cada una de las simulaciones. En concreto, para el caso $T = 0$ se observa que todas las simulaciones convergen al mismo estado estable, correspondiente con el estado de memoria de la cara feliz. Éste equivale a uno de los estados de Mattis, para encontrar los otros 3 será necesario irse a una segunda tanda de simulaciones.
+	\begin{figure}
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{9x9_T=0.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.45\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{9x9_T=0,2.png}
+	    \end{subfigure}%
+	    \caption{Estado final de 11 simulaciones de Montecarlo de 100000 steps a partir de un estado inicial aleatorio (arriba a la izquierda para cada figura). A la izquierda se toma $T = 0$ y a la derecha $T = 0.2$.}
+	    \label{Mattis-Low-T}
+	\end{figure}
+	En la parte derecha de \ref{Mattis-Low-T} se muestran las 11 simulaciones (más el estado inicial) para $T = 0.2$. Aquí sí se ve que existe mayor disparidad con los estados finales. No sólo aparece la cara triste en una de las simulaciones, si no que en el resto la red converge a los estados equivalentes a \ref{faces} al invertir todos los espines. En total todos estos suman 4 estados de Mattis ($2K$) que equivalen a mínimos globales de la energía del Hamiltoniano (\ref{HIsing}).
+	\begin{figure}
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{9x9_T=0,5.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.45\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{9x9_T=1,2.png}
+	    \end{subfigure}%
+	    \caption{Estado final de 11 simulaciones de Montecarlo de 100000 steps a partir de un estado inicial aleatorio (arriba a la izquierda para cada figura). A la izquierda se toma $T = 0.5$ y a la derecha $T = 1.2$.}
+	    \label{Mattis-High-T}
+	\end{figure}
+	\\
+	\\
+	Los efectos del ruido aprecen expresados en \ref{Mattis-High-T}. A la izquierda se ha simulado con $T - 0.5$ mientras que a la derecha se ha hecho lo propio con $T = 1.2$. Se aprecia que para el caso de las simulaciones con menor ruido las redes siguen convergiendo a un entorno cercano de los mínimos dictados por los estados de memoria, aunque con grandes fluctuaciones. Para  $T = 1.2$ se aprecia que la red es ya incapaz de converger a ningún estado de memoria, decimos entonces que pertenece a la región caótica ($T > T_{c} = 1$, según el análisis de campo medio).
+	\subsection{Overlap como parámetro de orden para la transición de fase}
+	El \textit{overlap}, o solapamiento, de un estado de la red con cada uno de los estados de memoria ha sido definido al tratar campo medio. Por cuestiones prácticas la manera en la que se calculará el overlap (con el estado de memoria $\mu$) en está sección será mediante la expresión:
+	\begin{equation}
+	    m^{\mu} = \frac{1}{N} \left| \sum_{i=1}^{N} \langle S_{i} \rangle \mathcal{P}^{\mu}_{i}  \right|
+	    \label{overlap-Montecarlo}
+	\end{equation}
+	Donde $\langle S_{i} \rangle$ es el valor medio del espín $i$. Para calcular este valor medio se realizará en cada simulación 100000 steps de Montecarlo para permitir al sistema alcanzar el equilibrio. Una vez ésto se haya conseguido se realizarán otros 100000 steps para cuantificar esta magnitud, de modo que:
+	\begin{equation}
+	    \langle S_{i} \rangle = \frac{1}{\text{Número de steps}} \sum_{k=1}^{\text{Número de steps}} S_{i}^{(k)}
+	\end{equation}
+	El overlap (\ref{overlap-Montecarlo}) se utilizará como parámetro de orden para intentar identificar la transición de fase de la región con memoria a la región caótica al pasar la temperatura crítica $T_{c} = 1$. Para ello se representa para redes con distintos tamaños y con $K = 1$ el overlap con el único estado de memoria en \ref{FSS-Overlap}.
+	\begin{figure}
+	    \centering
+	    \includegraphics[width=.45\linewidth]{Overlap_FSS.png}
+	    \caption{Overlap (\ref{overlap-Montecarlo}) en función de la temperatura para distintos tamaños de la red. En todos los casos se ha tomado sólo un estado de memoria.}
+	    \label{FSS-Overlap}
+	\end{figure}
+	\\
+	Se identifica en esta figura un claro descenso del overlap conforme aumenta la temperatura. Se pueden diferenciar ambas regiones (la de memoria y la caótica) con cierto rango de ambigüedad debido a que en ningún punto se puede afirmar que se alcance el límite termodinámico. Una de las hipótesis que se barajan es que en el límite $N \to \infty$ exista una no analiticidad de $m^{\mu}$ en $T = 1$ debido a la variación en la pendiente que se deja entrever en \ref{FSS-Overlap}, esto conllevaría que la transición de fase que sufre la red es de segundo orden.
+	\subsection{Estados metaestables}
+	Para finalizar en esta subsección se pretenden encontrar estados metaestables. Éstos estados equivalen a mínimos locales del Hamiltoniano que no se corresponden con ningún estado de memoria. Se corresponen con estados estables que, en el caso de estados de memoria ortogonales, tienen un overlap no nulo con cada uno de los $K$ estados $\{\mathcal{P}^{\mu}\}$.
+	\\
+	El procedimiento que se seguirá para encontrarlos será representar el módulo de la \text{magnetización}, así como la energía de la red de espines a lo largo de toda su evolución, para comprobar que ésta ha caído en un mínimo estable. La magnetización se define como el valor medio de los espines de la red, con lo que su módulo es:
+	\begin{equation}
+	    \left|M(\{S\})\right| = \frac{1}{N} \left| \sum_{i=1}^{N} S_{i} \right|
+	\end{equation}
+	La razón por la que a su vez se representa la energía es para asegurarse de la convergencia del sistema a uno de estos mínimos locales, pues puede darse el caso de que la red fluctúe entre dos estados con misma magnetización.
+	\\
+	En esta ocasión se utilizan tres estados de memoria ortogonales para una red $10 \times 10$ ($N = 100$). Estos estados se encuentran representados en \ref{ortogonal-states}. Los estados metaestables se han encontrado para temperaturas bajas ($T = 0$, $T = 0.1$ y $T = 0.2$), puesto que al ser mínimos locales cualquier fluctuación lo suficientemente grnde debida al ruido puede sacar a la red del pozo de potencial. Los resultados se representan en las figuras \ref{meta-T=0}, \ref{meta-T=0.1} y \ref{meta-T=0.2} de la página siguiente.
+	\\
+	Estos estados tienen overlap no nulo con cada cada uno de los estados de memoria, lo cual confirma su carácter metaestable. En la figura \ref{meta-overlap} se representan los overlaps del estado obtenido tras la simulación de \ref{meta-T=0} (a $T = 0$).
+	\begin{figure}
+	    \centering
+	    \begin{subfigure}{.3\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{state_10x10_1.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.3\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{state_10x10_2.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.3\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{state_10x10_3.png}
+	    \end{subfigure}%
+	    \caption{Estados de memoria ortogonales de una red $10 \times 10$ ($N = 100$).}
+	    \label{ortogonal-states}
+	\end{figure}
+	\begin{figure}
+	    \centering
+	    \includegraphics[width=.45\linewidth]{Metastable_overlap.png}
+	    \caption{Overlap con cada estado de memoria del estado metaestable obtenido en la simulación \ref{meta-T=0}.}
+	    \label{meta-overlap}
+	\end{figure}
+	\newpage
+	\begin{figure}[H]
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{magnet_meta_T=0,0.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.45\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{ener_meta_T=0,0.png}
+	    \end{subfigure}%
+	    \caption{Evolución de la magnetización (izquierda) y la energía (derecha) para la misma simulación de Montecarlo a $T = 0$. Las líneas negras discontinuas de la izquierda representan las magnetizaciones de los estados de memoria.}
+	    \label{meta-T=0}
+	\end{figure}
+	\begin{figure}[H]
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{magnet_meta_T=0,1.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.45\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{ener_meta_T=0,1.png}
+	    \end{subfigure}%
+	    \caption{Evolución de la magnetización (izquierda) y la energía (derecha) para la misma simulación de Montecarlo a $T = 0.1$. Las líneas negras discontinuas de la izquierda representan las magnetizaciones de los estados de memoria.}
+	    \label{meta-T=0.1}
+	\end{figure}
+	\begin{figure}[H]
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{magnet_meta_T=0,2.png}
+	    \end{subfigure}%
+	    \begin{subfigure}{.45\linewidth}
+	    \centering
+	    \includegraphics[width=\linewidth]{ener_meta_T=0,2.png}
+	    \end{subfigure}%
+	    \caption{Evolución de la magnetización (izquierda) y la energía (derecha) para la misma simulación de Montecarlo a $T = 0.2$. Las líneas negras discontinuas de la izquierda representan las magnetizaciones de los estados de memoria.}
+	    \label{meta-T=0.2}
+	\end{figure}
+	%\begin{figure}
+	    %\centering
+	    %\begin{subfigure}{.33\textwidth}
+	    %\centering
+	    %\includegraphics[width=\linewidth]{meta_T=0,0.png}
+	    %\end{subfigure}%
+	    %\begin{subfigure}{.33\linewidth}
+	    %\centering
+	    %\includegraphics[width=\linewidth]{meta_T=0,1.png}
+	    %\end{subfigure}%
+	    %\begin{subfigure}{.33\textwidth}
+	    %\centering
+	    %\includegraphics[width=\linewidth]{meta_T=0,2.png}
+	    %\end{subfigure}%
+	    %\caption{Estados metaestables surgidos de las simulaciones representadas en \ref{meta-T=0}, %\ref{meta-T=0.1} y \ref{meta-T=0.2}, respectivamente.}
+	 %   \label{metastable-states}
+	%\end{figure}
+	
+	\subsection{Conclusiones}
+	De los resultados de todas las subsecciones anteriores se puede afirmar de manera bastante rotunda la veracidad del análisis de campo medio realizado en las primeras secciones del texto. Se ha comprobado la existencia de los $2K$ estados de Mattis sin problema alguno, así como se ha visto el efecto que tiene el ruido sobre la memoria de la red. También se ha mostrado el overlap con los estados de memoria como un muy buen parámetro de orden para cuantificar la transición de fase de memoria-caos, aunque simulaciones con redes más grandes son necesarias para una determinación más precisa de las propiedades de ésta. Por último, la existencia de estados metaestables ha sido comprobada sin dejar lugar a dudas, siendo la aparición de estos mínimos locales una de las consecuencias más anti-intuitivas del modelo.
+	
 	\section{Ecuación de Langevin para la dinámica de los espines}
 	En la sección 1, hicimos un breve comentario sobre la dinámica de los espines, donde establecimos que si un estado es parcialmente similar a aquellos que forman el patrón, la dinámica llevará los espines a dichos estados estacionarios. Feigelman et. al. \cite{feigelman86} proponen la ecuación de Langevin que gobierna esta dinámica. 
 	
