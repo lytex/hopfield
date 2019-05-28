@@ -21,7 +21,7 @@
 \setlength{\parindent}{0.8cm}
 
 \title{\textbf{Almacenamiento de memoria y transiciones de fase en una red de Hopfield}}
-\author{Julián López Carballal, Jorge García Beni, Rubén de San Juan Morales, Fernando García Sánchez y José Luis Miranda Mora}
+\author{Julián López Carballal, Jorge García Beni, Rubén de San Juan Morales, \\ José Luis Miranda Mora y Fernando García Sánchez}
 \date{\today}
 
 \begin{document}
@@ -37,7 +37,7 @@
 	\Phi_i(t)=\sum_{j\neq i} J_{ij}\sigma_j
 	\end{displaymath}
 	El fin de estas redes es el almacenamiento y la reproducción de patrones. Podemos definir un patrón $\mu$ como una configuración dada de la red, $\mathcal{P}^\mu_i = \pm1, i \in[1,N]$. Entonces, considerando que la evolución de los estados neuronales se da en pasos temporales finitos $\Delta t$, la red habrá reproducido correctamente el patrón $\mu$ si $\sigma_i(t)=\sigma_i(t+\Delta t)=\mathcal{P}^\mu_i$; o dicho de otro modo, los patrones deberán ser puntos fijos de la dinámica. En general, consideraremos que la red almacena un número $K$ de patrones, de modo que $\mu\in[1,K]$. También consideraremos que los patrones sean ortogonales, de modo que:
-	\begin{equation} \label{ortogonal}
+	\begin{equation}
 	\frac{1}{N}\sum_{i=1}^N \mathcal{P}^\mu_i \mathcal{P}^\nu_i = \delta^{\mu\nu}
 	\label{ortpat}
 	\end{equation}
@@ -57,7 +57,7 @@
 	que toma el valor máximo $m^\mu = 1$ cuando la red reproduce exactamente el patrón, es decir, $\sigma_i = \mathcal{P}^\mu_i\hspace{0.2cm}\forall i$.
 	
 	Estos estados estacionarios vienen determinados por la forma de los pesos de la interacción $J_{ij}$, es decir, son los responsables del almacenamiento de los patrones $\mathcal{P}^\mu_i$. Recordemos que hemos elegido el caso simétrico, $J_{ij}=J_{ji}$. Estos pesos pueden interpretarse como elementos de una matriz. Si queremos que nuestra red sea capaz de reproducir (recordar) un número $K$ de patrones $\mathcal{P}^\mu_i$ previamente almacenados, buscamos que los $J_{ij}$ establezcan una correlación entre los estados y el patrón. Para ello, la forma más simple que pueden tomar es:
-	\begin{equation} \label{J-eq}
+	\begin{equation}
 	J_{ij}=\frac{1}{N}\sum_{\mu=1}^K \mathcal{P}^\mu_i \mathcal{P}^\mu_j
 	\label{Jint}
 	\end{equation}
@@ -219,7 +219,7 @@
 	\subsection{Metodología y objetivos}
 	Como se comentó anteriormente, para las simulaciones se echará mano de métodos aleatorios, más en concreto del \textit{Algoritmo de Metrópolis}. \\
 	Se comenzará con una configuración inicial de $N$ espines $\{ S_{\text{in}} \}$ aleatoriamente dispuestos. 
-	Cada simulación contará con un número concreto de pasos (\textit{steps}), en cada step se volteará aleatoriamente uno de estos espines, la nueva configuración con el espín volteado se denotará como $\{ S_{\text{new}}\}$. La energía de cada configuración viene dada por la ecuación (\ref{Hamiltonian}), de modo que la diferencia de energías es:
+	Cada simulación contará con un número concreto de pasos (\textit{steps}), en cada step se volteará aleatoriamente uno de estos espines, la nueva configuración con el espín volteado se denotará como $\{ S_{\text{new}}\}$. La energía de cada configuración viene dada por la ecuación \eqref{HIsing}, de modo que la diferencia de energías es:
 	\begin{equation}
 	    \Delta E = E(\{S_{\text{new}}\}) - E(\{S_{\text{in}}\})
 	\end{equation}
@@ -234,7 +234,7 @@
     \end{equation}
 En el caso de $T = 0$ sólo se aceptan los pasos con $\Delta E < 0$. En el caso de aceptar el paso se repite el proceso tomando como configuración inicial la nueva $\{ S_{\text{new}} \}$.
 \\
-Para definir los acoplos que se utilizarán en (\ref{HIsing}) para calcular estas energías se definirán previamente $K$ estados de memoria $\{\mathcal{P}^{\mu}\}$, con lo que las constantes $J_{ij}$ se calcularán según (\ref{J-eq}).
+Para definir los acoplos que se utilizarán en (\ref{HIsing}) para calcular estas energías se definirán previamente $K$ estados de memoria $\{\mathcal{P}^{\mu}\}$, con lo que las constantes $J_{ij}$ se calcularán según \eqref{Jint}.
 \\
 \\
 El fin de estas simulaciones es constatar la veracidad del análisis de campo medio de la sección anterior en el ámbito práctico, esto es, cuando se trabaja con un número finito $N$ de espines. Para ello se proponen los siguientes objetivos a comprobar:
@@ -248,7 +248,7 @@ Finalmente se redactará una conclusión en función de lo obtenido, argumentand
 	\subsection{Estados de Mattis y efecto del ruido}
 	A continuación se tratará de comprobar la existencia de los $2K$ estados de Mattis como mínimos estables de la red. Además se aprovechará para estudiar el efecto del ruido sobre la evolución de estados iniciales aleatorios.
 	\\
-	Se trabajará con una red $9 \times 9$, es decir, $N = 81$ con dos estados de memoria ($K = 2$). Los dos estados escogidos son los representados en la figura \ref{faces}, uno de ellos representando una cara feliz y el otro una cara triste\footnote{Estos estados de memoria no cumplen la condición de ortogonalidad enunciada en (\ref{ortogonal}). Sin embargo, éste requisito no es necesario a la hora de identificar los estados de Mattis, como se verá a continuación.}.
+	Se trabajará con una red $9 \times 9$, es decir, $N = 81$ con dos estados de memoria ($K = 2$). Los dos estados escogidos son los representados en la figura \ref{faces}, uno de ellos representando una cara feliz y el otro una cara triste\footnote{Estos estados de memoria no cumplen la condición de ortogonalidad enunciada en \eqref{ortpat}. Sin embargo, éste requisito no es necesario a la hora de identificar los estados de Mattis, como se verá a continuación.}.
 	\begin{figure}
 	    \centering
 	    \begin{subfigure}{.5\textwidth}
@@ -498,8 +498,8 @@ A medida que aumentamos el número de patrones almacenados en la red, perdemos l
 Por otro lado, tenemos una variación del número de errores medidos en el sistema respecto a la temperatura, donde al aumentar este parámetro lo suficiente, el sistema tiene problemas al alcanzar el estado de equilibrio, produciendo que aumente el número de errores. \textbf{es importante destacar} que para T alta, cada gráfica tiene un número diferente de errores porque se han usado un \textbf{número diferente de estados iniciales}.\\
 Vamos a ver también la dinámica para una red mayor, con L=64:\\
 \begin{center}
-     \includegraphics[scale=0.2]{dinamicaL64}
-     \includegraphics[scale=0.2]{dinamicaL64Talta}
+     \includegraphics[scale=0.2]{dinamicaL64.png}
+     \includegraphics[scale=0.2]{dinamicaL64Talta.png}
  \end{center}
  Podemos ver que se reproducen los mismos comportamientos, aunque admite una cantidad mayor de patrones almacenados antes de llegar a su régimen caótico, y es capaz de tolerar la T para un número de patrones mayor que el caso L=8 , esta red no reduce a cero el número de errores, aunque sí los mantiene acotados.\\
  Para concluir esta sección, hemos visto que la evolución de la ecuación de Langevin se comportan de una manera esperada, aunque nos encontramos problemas con los estados ortogonales (lo cual nos impide evolucionar el sistema en ciertos casos como hemos visto), el sistema sí que guarda los patrones que introducimos, y evoluciona hasta estos.
