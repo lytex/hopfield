@@ -1,7 +1,7 @@
 Brian2==2.2.2.1
 cycler==0.10.0
 Cython==0.29.7
-Jinja2==2.10.1
+Jinja2==2.11.3
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
 matplotlib==3.0.3
